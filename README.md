@@ -20,6 +20,16 @@ Seeders
 
 - Add `contact-seeder.php` to `resources/seeders/main.php`
 
+Languages
+
+If you don't want to copy language files, remove `-t lang` from install command.
+
+Then add this line to admin & front middleware:
+
+```php
+$this->lang->loadAllFromVendor('lyrasoft/contact', 'ini');
+```
+
 ## Register Admin Menu
 
 Edit `resources/menu/admin/sidemenu.menu.php`

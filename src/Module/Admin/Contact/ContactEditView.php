@@ -18,6 +18,7 @@ use Windwalker\Core\Attributes\ViewModel;
 use Windwalker\Core\Form\FormFactory;
 use Windwalker\Core\Html\HtmlFrame;
 use Windwalker\Core\Language\TranslatorTrait;
+use Windwalker\Core\Router\Exception\RouteNotFoundException;
 use Windwalker\Core\Router\Navigator;
 use Windwalker\Core\View\View;
 use Windwalker\Core\View\ViewModelInterface;
@@ -62,6 +63,10 @@ class ContactEditView implements ViewModelInterface
         $item = $this->repository->getItem($id);
 
         if ($view->getLayout() === 'contact-preview') {
+            if (!$item) {
+                throw new RouteNotFoundException();
+            }
+
             $this->prepareMetadata($app, $view);
             return compact('id', 'item', 'type');
         }
