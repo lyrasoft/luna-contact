@@ -65,6 +65,11 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
                         </x-sort>
                     </th>
 
+                    {{-- Edit --}}
+                    <th style="width: 1%" class="text-nowrap">
+                        @lang('contact.action.edit')
+                    </th>
+
                     {{-- Title --}}
                     <th class="text-nowrap">
                         <x-sort field="contact.title">
@@ -72,19 +77,25 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
                         </x-sort>
                     </th>
 
-                    {{-- Ordering --}}
-                    <th style="width: 10%" class="text-nowrap">
-                        <div class="d-flex w-100 justify-content-end">
-                            <x-sort
-                                asc="contact.ordering ASC"
-                                desc="contact.ordering DESC"
-                            >
-                                @lang('unicorn.field.ordering')
-                            </x-sort>
-                            @if($vm->reorderEnabled($ordering))
-                                <x-save-order class="ml-2 ms-2"></x-save-order>
-                            @endif
-                        </div>
+                    {{-- Name --}}
+                    <th class="text-nowrap">
+                        <x-sort field="contact.name">
+                            @lang('contact.field.name')
+                        </x-sort>
+                    </th>
+
+                    {{-- Created --}}
+                    <th class="text-nowrap">
+                        <x-sort field="contact.created">
+                            @lang('unicorn.field.created')
+                        </x-sort>
+                    </th>
+
+                    {{-- Assignee --}}
+                    <th class="text-nowrap">
+                        <x-sort field="contact.assignee_id">
+                            @lang('contact.field.assignee')
+                        </x-sort>
                     </th>
 
                     {{-- Delete --}}
@@ -115,12 +126,22 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
                         {{-- State --}}
                         <td>
                             <x-state-dropdown color-on="text"
+                                style="width: 100%"
                                 button-style="width: 100%"
+                                color-on="button"
                                 use-states
                                 :workflow="$workflow"
                                 :id="$entity->getId()"
                                 :value="$item->state"
                             />
+                        </td>
+
+                        {{-- Edit --}}
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-outline-primary" href="{{ $nav->to('contact_list') }}"
+                                title="@lang('contact.action.edit')">
+                                <i class="fa fa-pen-to-square"></i>
+                            </a>
                         </td>
 
                         {{-- Title --}}
@@ -132,14 +153,42 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
                             </div>
                         </td>
 
-                        {{-- Ordering --}}
+                        {{-- Name --}}
+                        <td>
+                            <div class="small">
+                                {{ $item->name }}
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="small" data-bs-toggle="tooltip"
+                                title="{{ $chronos->toLocalFormat($item->created) }}">
+                                {{ $chronos->toLocalFormat($item->created, 'Y-m-d') }}
+                            </div>
+                        </td>
+
+                        {{-- Assignee --}}
                         <td class="text-end text-right">
-                            <x-order-control
-                                :enabled="$vm->reorderEnabled($ordering)"
-                                :row="$i"
-                                :id="$entity->getId()"
-                                :value="$item->ordering"
-                            ></x-order-control>
+                            @if ($item->assignee_id)
+                                <div class="d-flex align-items-center">
+                                    @if (isset($item->assignee->avatar))
+                                        <div class="me-2">
+                                            <img src="{{ $item->assignee->avatar }}" alt="Avatar"
+                                                style="width: 24px; height: 24px;"
+                                                class="rounded-circle"
+                                            >
+                                        </div>
+                                    @endif
+                                    <div class="small">
+                                        <a href="{{ $nav->to('user_edit')->id($item->assignee->id) }}"
+                                            class="text-muted">
+                                            {{ $item->assignee->name }}
+                                        </a>
+                                    </div>
+                                </div>
+                            @else
+                                -
+                            @endif
                         </td>
 
                         {{-- Delete --}}

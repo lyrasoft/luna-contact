@@ -52,6 +52,6 @@ class ContactState extends Enum implements EnumTranslatableInterface
 
     public function trans(LanguageInterface $lang, ...$args): string
     {
-        return $lang->trans('app.contact.state.' . $this->getKey());
+        return $lang->trans('contact.state.' . $this->getKey());
     }
 }

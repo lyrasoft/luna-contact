@@ -15,5 +15,13 @@
         }
     ],
     "minimum-stability": "beta",
-    "require": {}
+    "require": {},
+    "windwalker":{
+        "packages": [
+            "Lyrasoft\\Contact\\ContactPackage"
+        ],
+        "modules": [
+            "src/Module"
+        ]
+    }
 }

@@ -79,8 +79,8 @@ class Contact implements EntityInterface
     #[CurrentTime]
     protected ?Chronos $modified = null;
 
-    #[Column('assignee')]
-    protected int $assignee = 0;
+    #[Column('assignee_id')]
+    protected int $assigneeId = 0;
 
     #[Column('created_by')]
     #[Author]
@@ -280,14 +280,14 @@ class Contact implements EntityInterface
         return $this;
     }
 
-    public function getAssignee(): int
+    public function getAssigneeId(): int
     {
-        return $this->assignee;
+        return $this->assigneeId;
     }
 
-    public function setAssignee(int $assignee): static
+    public function setAssigneeId(int $assigneeId): static
     {
-        $this->assignee = $assignee;
+        $this->assigneeId = $assigneeId;
 
         return $this;
     }
