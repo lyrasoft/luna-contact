@@ -112,7 +112,10 @@ class ContactListView implements ViewModelInterface
         return [
             'contact.id',
             'contact.title',
-            'contact.alias',
+            'contact.name',
+            'contact.phone',
+            'contact.email',
+            'contact.content',
         ];
     }
 
@@ -158,7 +161,7 @@ class ContactListView implements ViewModelInterface
     {
         $view->getHtmlFrame()
             ->setTitle(
-                $this->trans('unicorn.title.grid', title: 'Contact')
+                $this->trans('unicorn.title.grid', title: $this->trans('contact.main.title'))
             );
     }
 }

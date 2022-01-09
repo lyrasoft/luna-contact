@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Lyrasoft\Contact\Module\Admin\Contact\Form;
 
+use Lyrasoft\Contact\Enum\ContactState;
+use Lyrasoft\Luna\Field\UserModalField;
 use Unicorn\Enum\BasicState;
 use Windwalker\Core\Language\TranslatorTrait;
 use Windwalker\Form\Field\ListField;
@@ -50,7 +52,7 @@ class GridForm implements FieldDefinitionInterface
                 $form->add('contact.state', ListField::class)
                     ->label($this->trans('unicorn.field.state'))
                     ->option($this->trans('unicorn.select.placeholder'), '')
-                    ->registerOptions(BasicState::getTransItems($this->lang))
+                    ->registerOptions(ContactState::getTransItems($this->lang))
                     ->onchange('this.form.submit()');
             }
         );
@@ -61,7 +63,10 @@ class GridForm implements FieldDefinitionInterface
                 $form->add('state', ListField::class)
                     ->label($this->trans('unicorn.field.state'))
                     ->option($this->trans('unicorn.select.no.change'), '')
-                    ->registerOptions(BasicState::getTransItems($this->lang));
+                    ->registerOptions(ContactState::getTransItems($this->lang));
+
+                $form->add('assignee_id', UserModalField::class)
+                    ->label($this->trans('contact.field.assignee'));
             }
         );
     }

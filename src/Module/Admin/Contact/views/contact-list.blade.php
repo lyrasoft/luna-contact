@@ -146,21 +146,30 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
 
                         {{-- Title --}}
                         <td>
-                            <div>
+                            <div class="mb-1">
                                 <a href="{{ $nav->to('contact_edit')->id($entity->getId()) }}">
+                                    <span class="fa fa-eye"></span>
+
+                                    @if (isset($item->title))
                                     {{ $item->title }}
+                                    @else
+                                    #{{ $item->id }}
+                                    @endif
                                 </a>
+                            </div>
+                            <div class="small text-muted">
+                                {{ \Windwalker\str($item->content)->truncate(150, '...') }}
                             </div>
                         </td>
 
                         {{-- Name --}}
-                        <td>
+                        <td class="text-nowrap">
                             <div class="small">
                                 {{ $item->name }}
                             </div>
                         </td>
 
-                        <td>
+                        <td class="text-nowrap">
                             <div class="small" data-bs-toggle="tooltip"
                                 title="{{ $chronos->toLocalFormat($item->created) }}">
                                 {{ $chronos->toLocalFormat($item->created, 'Y-m-d') }}
@@ -168,7 +177,7 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
                         </td>
 
                         {{-- Assignee --}}
-                        <td class="text-end text-right">
+                        <td class="text-nowrap">
                             @if ($item->assignee_id)
                                 <div class="d-flex align-items-center">
                                     @if (isset($item->assignee->avatar))
@@ -231,7 +240,7 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
             @include('@csrf')
         </div>
 
-        <x-batch-modal :form="$form" namespace="batch"></x-batch-modal>
+        <x-batch-modal :form="$form" namespace="batch" :copy="false"></x-batch-modal>
     </form>
 
 @stop
