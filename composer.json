@@ -1,0 +1,19 @@
+{
+    "name": "lyrasoft/contact",
+    "description": "LYRASOFT contact package",
+    "type": "windwalker-package",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Lyrasoft\\Contact\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Simon Asika",
+            "email": "asika32764@gmail.com"
+        }
+    ],
+    "minimum-stability": "beta",
+    "require": {}
+}
