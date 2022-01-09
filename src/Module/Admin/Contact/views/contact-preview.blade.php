@@ -4,7 +4,7 @@
  * Global variables
  * --------------------------------------------------------------
  * @var $app       AppContext      Application context.
- * @var $vm        object          The view model object.
+ * @var $vm        \Lyrasoft\Contact\Module\Admin\Contact\ContactEditView          The view model object.
  * @var $uri       SystemUri       System Uri information.
  * @var $chronos   ChronosService  The chronos datetime service.
  * @var $nav       Navigator       Navigator object to build route.
@@ -21,10 +21,13 @@ use Windwalker\Core\Language\LangService;
 use Windwalker\Core\Router\Navigator;
 use Windwalker\Core\Router\SystemUri;
 
+
 ?>
 
-@extends('global.body')
+@extends('admin.global.body')
 
-@section('content')
-
+@section('superbody')
+<div class="bg-white">
+    @include('contact.contact-table-' . $type)
+</div>
 @stop

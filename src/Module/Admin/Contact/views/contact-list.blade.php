@@ -138,7 +138,8 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
 
                         {{-- Edit --}}
                         <td class="text-center">
-                            <a class="btn btn-sm btn-outline-primary" href="{{ $nav->to('contact_list') }}"
+                            <a class="btn btn-sm btn-outline-primary"
+                                href="{{ $nav->to('contact_edit')->id($entity->getId()) }}"
                                 title="@lang('contact.action.edit')">
                                 <i class="fa fa-pen-to-square"></i>
                             </a>
@@ -147,7 +148,10 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
                         {{-- Title --}}
                         <td>
                             <div class="mb-1">
-                                <a href="{{ $nav->to('contact_edit')->id($entity->getId()) }}">
+                                <a href="{{ $nav->to('contact_edit')->id($entity->getId())->layout('preview') }}"
+                                    uni-modal-link="#preview-modal"
+                                    data-resize="1"
+                                >
                                     <span class="fa fa-eye"></span>
 
                                     @if (isset($item->title))
@@ -241,6 +245,10 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
         </div>
 
         <x-batch-modal :form="$form" namespace="batch" :copy="false"></x-batch-modal>
+
+        <uni-iframe-modal id="preview-modal" size="modal-lg"
+            data-route="{{ $nav->to('contact_edit')->id('{id}')->layout('preview') }}"
+        ></uni-iframe-modal>
     </form>
 
 @stop

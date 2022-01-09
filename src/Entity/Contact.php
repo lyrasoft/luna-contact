@@ -94,6 +94,11 @@ class Contact implements EntityInterface
     #[Cast(JsonCast::class)]
     protected array $params = [];
 
+    public function __construct()
+    {
+        $this->setState(ContactState::PENDING());
+    }
+
     #[EntitySetup]
     public static function setup(EntityMetadata $metadata): void
     {

@@ -23,7 +23,7 @@ use Windwalker\Form\Form;
 /**
  * The GridForm class.
  */
-class GridForm implements FieldDefinitionInterface
+class MainGridForm implements FieldDefinitionInterface
 {
     use TranslatorTrait;
 
@@ -53,6 +53,10 @@ class GridForm implements FieldDefinitionInterface
                     ->label($this->trans('unicorn.field.state'))
                     ->option($this->trans('unicorn.select.placeholder'), '')
                     ->registerOptions(ContactState::getTransItems($this->lang))
+                    ->onchange('this.form.submit()');
+
+                $form->add('contact.assignee_id', UserModalField::class)
+                    ->label($this->trans('contact.field.assignee'))
                     ->onchange('this.form.submit()');
             }
         );

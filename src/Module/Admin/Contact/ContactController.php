@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Lyrasoft\Contact\Module\Admin\Contact;
 
-use Lyrasoft\Contact\Module\Admin\Contact\Form\EditForm;
+use Lyrasoft\Contact\Module\Admin\Contact\Form\MainEditForm;
 use Lyrasoft\Contact\Repository\ContactRepository;
 use Unicorn\Controller\CrudController;
 use Unicorn\Controller\GridController;
@@ -32,7 +32,8 @@ class ContactController
         Navigator $nav,
         #[Autowire] ContactRepository $repository,
     ): mixed {
-        $form = $app->make(EditForm::class);
+        $type = $app->input('type');
+        $form = $app->make($repository->getFormClass('admin', 'edit', $type));
 
         $uri = $app->call([$controller, 'save'], compact('repository', 'form'));
 

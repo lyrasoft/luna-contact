@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Lyrasoft\Contact\Module\Admin\Contact;
 
-use Lyrasoft\Contact\Module\Admin\Contact\Form\GridForm;
+use Lyrasoft\Contact\Module\Admin\Contact\Form\MainGridForm;
 use Lyrasoft\Contact\Repository\ContactRepository;
 use Windwalker\Core\Application\AppContext;
 use Windwalker\Core\Attributes\ViewModel;
@@ -55,6 +55,7 @@ class ContactListView implements ViewModelInterface
      */
     public function prepare(AppContext $app, View $view): array
     {
+        $type = $app->input('type');
         $state = $this->repository->getState();
 
         // Prepare Items
@@ -70,6 +71,7 @@ class ContactListView implements ViewModelInterface
                 $search['*'] ?? '',
                 $this->getSearchFields()
             )
+            ->where('contact.type', $type)
             ->ordering($ordering)
             ->page($page)
             ->limit($limit);
@@ -77,14 +79,17 @@ class ContactListView implements ViewModelInterface
         $pagination = $items->getPagination();
 
         // Prepare Form
-        $form = $this->formFactory->create(GridForm::class);
+        $form = $this->formFactory->create(
+            $this->repository->getFormClass('admin', 'grid', $type),
+            type: $type
+        );
         $form->fill(compact('search', 'filter'));
 
         $showFilters = $this->showFilterBar($filter);
 
         $this->prepareMetadata($app, $view);
 
-        return compact('items', 'pagination', 'form', 'showFilters', 'ordering');
+        return compact('items', 'pagination', 'form', 'showFilters', 'ordering', 'type');
     }
 
     public function prepareItem(Collection $item): object
@@ -159,9 +164,11 @@ class ContactListView implements ViewModelInterface
      */
     protected function prepareMetadata(AppContext $app, View $view): void
     {
+        $type = $app->input('type');
+
         $view->getHtmlFrame()
             ->setTitle(
-                $this->trans('unicorn.title.grid', title: $this->trans('contact.main.title'))
+                $this->trans('unicorn.title.grid', title: $this->trans('contact.' . $type . '.title'))
             );
     }
 }
