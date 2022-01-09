@@ -47,7 +47,7 @@ $nav->to('contact_list', ['type' => '{type}']);
 
 ## Frontend
 
-One MVC per type. If you want a contact with type: `foo`, generate a `FooContact` MVC
+One MVC per type. If you want another contact form with type: `foo`, just generate a `FooContact` MVC
 
 ```shell
 php windwalker g controller Admin/FooContact
