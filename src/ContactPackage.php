@@ -48,7 +48,7 @@ class ContactPackage extends AbstractPackage implements ServiceProviderInterface
             [
                 static::path("src/Module/Admin/Contact/**/*") => "@source/Module/Admin/Contact",
             ],
-            ['Lyrasoft\\Luna\\Module\\Admin' => 'App\\Module\\Admin'],
+            ['Lyrasoft\\Contact\\Module\\Admin' => 'App\\Module\\Admin'],
             ['modules', 'contact_admin'],
         );
 
@@ -56,7 +56,7 @@ class ContactPackage extends AbstractPackage implements ServiceProviderInterface
             [
                 static::path("src/Module/Front/Contact/**/*") => "@source/Module/Front/Contact",
             ],
-            ['Lyrasoft\\Luna\\Module\\Front' => 'App\\Module\\Front'],
+            ['Lyrasoft\\Contact\\Module\\Front' => 'App\\Module\\Front'],
             ['modules', 'contact_front'],
         );
 
@@ -66,8 +66,8 @@ class ContactPackage extends AbstractPackage implements ServiceProviderInterface
                 static::path("src/Repository/ContactRepository.php") => '@source/Repository',
             ],
             [
-                'Lyrasoft\\Luna\\Entity' => 'App\\Entity',
-                'Lyrasoft\\Luna\\Repository' => 'App\\Repository',
+                'Lyrasoft\\Contact\\Entity' => 'App\\Entity',
+                'Lyrasoft\\Contact\\Repository' => 'App\\Repository',
             ],
             ['modules', 'contact_model']
         );
