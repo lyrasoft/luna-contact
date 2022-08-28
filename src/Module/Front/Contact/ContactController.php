@@ -91,7 +91,6 @@ class ContactController
                             )
                         )
                     )
-                    ->debug()
                     ->all(User::class);
 
                 $sendEvent = $app->emit(
