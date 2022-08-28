@@ -34,7 +34,7 @@ use Windwalker\Form\Form;
 
 @section('content')
     <div class="container my-5">
-        <form name="admin-form" id="admin-form"
+        <form name="contact-form" id="contact-form"
             uni-form-validate='{"scroll": true}'
             action="{{ $nav->to('contact') }}"
             method="POST" enctype="multipart/form-data">
@@ -99,7 +99,7 @@ use Windwalker\Form\Form;
             </div>
 
             <div class="d-none">
-{{--                @include('@csrf')--}}
+                <x-csrf></x-csrf>
             </div>
         </form>
     </div>

@@ -9,7 +9,7 @@ import u from '@main';
 
 u.$ui.bootstrap.tooltip();
 
-const form = '#admin-form';
+const form = '#contact-form';
 
 u.formValidation()
   .then(() => u.$ui.disableOnSubmit(form));
