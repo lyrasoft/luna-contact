@@ -30,33 +30,35 @@ class ContactStateWorkflow extends AbstractWorkflow
 
     public function configure(WorkflowController $workflow): void
     {
+        // show(ContactState::PENDING->trans($this->lang));exit(' @Checkpoint');
+
         $workflow->setStateMeta(
-            ContactState::PENDING(),
-            ContactState::PENDING()->trans($this->lang),
+            ContactState::PENDING->getValue(),
+            'ssss',
             'fa fa-fw fa-clock',
             'warning'
         );
         $workflow->setStateMeta(
-            ContactState::HANDLING(),
-            ContactState::HANDLING()->trans($this->lang),
+            ContactState::HANDLING->getValue(),
+            ContactState::HANDLING->trans($this->lang),
             'fa fa-fw fa-forward',
             'primary'
         );
         $workflow->setStateMeta(
-            ContactState::DONE(),
-            ContactState::DONE()->trans($this->lang),
+            ContactState::DONE->getValue(),
+            ContactState::DONE->trans($this->lang),
             'fa fa-fw fa-check',
             'success'
         );
         $workflow->setStateMeta(
-            ContactState::END(),
-            ContactState::END()->trans($this->lang),
+            ContactState::END->getValue(),
+            ContactState::END->trans($this->lang),
             'fa fa-fw fa-check-double',
             'secondary'
         );
         $workflow->setStateMeta(
-            ContactState::CANCEL(),
-            ContactState::CANCEL()->trans($this->lang),
+            ContactState::CANCEL->getValue(),
+            ContactState::CANCEL->trans($this->lang),
             'fa fa-fw fa-times',
             'danger'
         );

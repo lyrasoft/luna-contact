@@ -33,6 +33,7 @@ use Windwalker\ORM\Metadata\EntityMetadata;
  * The Contact class.
  */
 #[Table('contacts', 'contact')]
+#[\AllowDynamicProperties]
 class Contact implements EntityInterface
 {
     use EntityTrait;
@@ -96,7 +97,7 @@ class Contact implements EntityInterface
 
     public function __construct()
     {
-        $this->setState(ContactState::PENDING());
+        $this->setState(ContactState::PENDING);
     }
 
     #[EntitySetup]
@@ -208,7 +209,7 @@ class Contact implements EntityInterface
 
     public function setState(string|ContactState $state): static
     {
-        $this->state = new ContactState($state);
+        $this->state = $state;
 
         return $this;
     }
