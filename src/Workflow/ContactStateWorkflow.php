@@ -30,8 +30,6 @@ class ContactStateWorkflow extends AbstractWorkflow
 
     public function configure(WorkflowController $workflow): void
     {
-        // show(ContactState::PENDING->trans($this->lang));exit(' @Checkpoint');
-
         $workflow->setStateMeta(
             ContactState::PENDING(),
             ContactState::PENDING()->trans($this->lang),
