@@ -97,7 +97,7 @@ class Contact implements EntityInterface
 
     public function __construct()
     {
-        $this->setState(ContactState::PENDING);
+        $this->setState(ContactState::PENDING());
     }
 
     #[EntitySetup]
@@ -209,7 +209,8 @@ class Contact implements EntityInterface
 
     public function setState(string|ContactState $state): static
     {
-        $this->state = $state;
+
+        $this->state = ContactState::wrap($state);
 
         return $this;
     }

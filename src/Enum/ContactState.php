@@ -16,19 +16,39 @@ use Windwalker\Utilities\Enum\EnumTranslatableInterface;
 use Windwalker\Utilities\Enum\EnumTranslatableTrait;
 use Windwalker\Utilities\Contract\LanguageInterface;
 
-enum ContactState: string implements EnumTranslatableInterface
+/**
+ * The ContactState enum class.
+ *
+ * @method static $this PENDING()
+ * @method static $this HANDLING()
+ * @method static $this DONE()
+ * @method static $this END()
+ * @method static $this CANCEL()
+ */
+class ContactState extends Enum implements EnumTranslatableInterface
 {
     use EnumTranslatableTrait;
 
-    case PENDING = 'pending';
+    public const PENDING = 'pending';
+    public const HANDLING = 'handling';
+    public const DONE = 'done';
+    public const END = 'end';
+    public const CANCEL = 'cancel';
 
-    case HANDLING = 'handling';
-
-    case DONE = 'done';
-
-    case END = 'end';
-
-    case CANCEL = 'cancel';
+    /**
+     * Creates a new value of some type
+     *
+     * @psalm-pure
+     *
+     * @param  mixed  $value
+     *
+     * @psalm-param T $value
+     * @throws \UnexpectedValueException if incompatible type is given.
+     */
+    public function __construct(mixed $value)
+    {
+        parent::__construct($value);
+    }
 
     public function trans(LanguageInterface $lang, ...$args): string
     {

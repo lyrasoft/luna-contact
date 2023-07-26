@@ -33,32 +33,32 @@ class ContactStateWorkflow extends AbstractWorkflow
         // show(ContactState::PENDING->trans($this->lang));exit(' @Checkpoint');
 
         $workflow->setStateMeta(
-            ContactState::PENDING->getValue(),
-            'ssss',
+            ContactState::PENDING(),
+            ContactState::PENDING()->trans($this->lang),
             'fa fa-fw fa-clock',
             'warning'
         );
         $workflow->setStateMeta(
-            ContactState::HANDLING->getValue(),
-            ContactState::HANDLING->trans($this->lang),
+            ContactState::HANDLING(),
+            ContactState::HANDLING()->trans($this->lang),
             'fa fa-fw fa-forward',
             'primary'
         );
         $workflow->setStateMeta(
-            ContactState::DONE->getValue(),
-            ContactState::DONE->trans($this->lang),
+            ContactState::DONE(),
+            ContactState::DONE()->trans($this->lang),
             'fa fa-fw fa-check',
             'success'
         );
         $workflow->setStateMeta(
-            ContactState::END->getValue(),
-            ContactState::END->trans($this->lang),
+            ContactState::END(),
+            ContactState::END()->trans($this->lang),
             'fa fa-fw fa-check-double',
             'secondary'
         );
         $workflow->setStateMeta(
-            ContactState::CANCEL->getValue(),
-            ContactState::CANCEL->trans($this->lang),
+            ContactState::CANCEL(),
+            ContactState::CANCEL()->trans($this->lang),
             'fa fa-fw fa-times',
             'danger'
         );
