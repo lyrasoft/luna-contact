@@ -18,7 +18,7 @@ use Windwalker\Utilities\Contract\LanguageInterface;
 
 /**
  * The ContactState enum class.
- * 
+ *
  * @method static $this PENDING()
  * @method static $this HANDLING()
  * @method static $this DONE()
