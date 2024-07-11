@@ -52,7 +52,7 @@ class MainGridForm implements FieldDefinitionInterface
                 $form->add('contact.state', ListField::class)
                     ->label($this->trans('unicorn.field.state'))
                     ->option($this->trans('unicorn.select.placeholder'), '')
-                    ->registerOptions(ContactState::getTransItems($this->lang))
+                    ->registerFromEnums(ContactState::class, $this->lang)
                     ->onchange('this.form.submit()');
 
                 $form->add('contact.assignee_id', UserModalField::class)

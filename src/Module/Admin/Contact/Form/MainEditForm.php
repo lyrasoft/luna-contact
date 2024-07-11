@@ -80,7 +80,7 @@ class MainEditForm implements FieldDefinitionInterface
             function (Form $form) {
                 $form->add('state', ListField::class)
                     ->label($this->trans('unicorn.field.state'))
-                    ->registerOptions(ContactState::getTransItems($this->lang));
+                    ->registerFromEnums(ContactState::class, $this->lang);
 
                 $form->add('assignee_id', UserModalField::class)
                     ->label($this->trans('contact.field.assignee'));
