@@ -53,10 +53,12 @@ class ContactController
         $controller->setMuted(true);
 
         $controller->prepareSave(
-            function (PrepareSaveEvent $event) {
+            function (PrepareSaveEvent $event) use ($app) {
                 $data = &$event->getData();
 
                 $data['type'] = 'main';
+                $data['params'] ??= [];
+                $data['params']['ip'] = $app->getAppRequest()->getClientIP();
             }
         );
 
