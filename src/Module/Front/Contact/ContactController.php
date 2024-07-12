@@ -113,7 +113,9 @@ class ContactController
                     $message->bcc($user->getEmail());
                 }
 
-                $message->send();
+                if ($message->getTo() || $message->getCc() || $message->getBcc()) {
+                    $message->send();
+                }
                 // ------------------------
                 // End Admin mail
 
@@ -131,7 +133,9 @@ class ContactController
                 // ------------------------
                 $message = $contactService->createThanksMailMessage($entity);
 
-                $message->send();
+                if ($message->getTo() || $message->getCc() || $message->getBcc()) {
+                    $message->send();
+                }
                 // ------------------------
                 // End Thanks mail
             }
