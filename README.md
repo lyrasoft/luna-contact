@@ -1,6 +1,6 @@
 # LYRASOFT Contact Package
 
-![screenshot 2022-01-09 下午10 01 08](https://user-images.githubusercontent.com/1639206/148685457-379396e3-6da4-4c73-9c75-130e4b128004.jpg)
+![contact](https://user-images.githubusercontent.com/1639206/148685457-379396e3-6da4-4c73-9c75-130e4b128004.jpg)
 
 ## Installation
 
@@ -27,7 +27,7 @@ If you don't want to copy language files, remove `-t lang` from install command.
 Then add this line to admin & front middleware:
 
 ```php
-$this->lang->loadAllFromVendor('lyrasoft/contact', 'ini');
+$this->lang->loadAllFromVendor(\Lyrasoft\Contact\ContactPackage::class, 'ini');
 ```
 
 ## Register Admin Menu
