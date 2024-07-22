@@ -68,7 +68,7 @@ class Contact implements EntityInterface
 
     #[Column('state')]
     #[Cast(ContactState::class)]
-    protected ContactState $state;
+    protected ContactState $state = ContactState::PENDING;
 
     #[Column('created')]
     #[CastNullable(Chronos::class)]
@@ -94,11 +94,6 @@ class Contact implements EntityInterface
     #[Column('params')]
     #[Cast(JsonCast::class)]
     protected array $params = [];
-
-    public function __construct()
-    {
-        $this->setState(ContactState::PENDING());
-    }
 
     #[EntitySetup]
     public static function setup(EntityMetadata $metadata): void
@@ -209,7 +204,6 @@ class Contact implements EntityInterface
 
     public function setState(string|ContactState $state): static
     {
-
         $this->state = ContactState::wrap($state);
 
         return $this;
