@@ -28,6 +28,9 @@ use Windwalker\Form\Form;
  * @var Form      $form
  * @var Contact $item
  */
+
+$uniScript = $app->retrieve(\Unicorn\Script\UnicornScript::class);
+$uniScript->addRoute('@contact');
 ?>
 
 @extends('global.body')
@@ -36,7 +39,7 @@ use Windwalker\Form\Form;
     <div class="container my-5">
         <form name="contact-form" id="contact-form"
             uni-form-validate='{"scroll": true}'
-            action="{{ $nav->to('contact') }}"
+            action="{{ $uri->root() }}"
             method="POST" enctype="multipart/form-data">
 
             <header class="mb-4">
@@ -93,7 +96,8 @@ use Windwalker\Form\Form;
             @endif
 
             <div class="my-4 d-grid gap-2">
-                <button type="submit" class="btn btn-primary" data-dos>
+                <button type="button" class="btn btn-primary" data-dos
+                    data-task="submit">
                     @lang('contact.button.submit')
                 </button>
             </div>

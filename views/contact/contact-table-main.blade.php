@@ -118,6 +118,20 @@ use Windwalker\Core\Router\SystemUri;
         </tr>
     @endif
 
+    {{-- Params --}}
+    @if (method_exists($item, 'getParams'))
+        @if ($item->getParams()['ip'] ?? '')
+            <tr>
+                <th >
+                    IP
+                </th>
+                <td>
+                    {{ $item->getParams()['ip'] ?? '' }}
+                </td>
+            </tr>
+        @endif
+    @endif
+
     {{-- Content --}}
     @if (method_exists($item, 'getContent'))
         <tr>
