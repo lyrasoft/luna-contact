@@ -45,82 +45,72 @@ use Windwalker\Core\Router\SystemUri;
             @lang('unicorn.field.created')
         </th>
         <td>
-            {{ $chronos->toLocalFormat($item->created
-) }}
+            {{ $chronos->toLocalFormat($item->created) }}
         </td>
     </tr>
 
     {{-- Title --}}
-    @if (method_exists($item, 'getTitle'))
+    @if (property_exists($item, 'title'))
         <tr>
             <th >
                 @lang('unicorn.field.title')
             </th>
             <td>
-                {{ $item->title
- }}
+                {{ $item->title }}
             </td>
         </tr>
     @endif
 
     {{-- Name --}}
-    @if (method_exists($item, 'getName'))
+    @if (property_exists($item, 'name'))
         <tr>
             <th >
                 @lang('contact.field.name')
             </th>
             <td>
-                {{ $item->name
- }}
+                {{ $item->name }}
             </td>
         </tr>
     @endif
 
     {{-- Email --}}
-    @if (method_exists($item, 'getEmail'))
+    @if (property_exists($item, 'email'))
         <tr>
             <th >
                 @lang('contact.field.email')
             </th>
             <td>
-                <a href="mailto://{{ $item->email
- }}">
-                    {{ $item->email
- ?: '-' }}
+                <a href="mailto://{{ $item->email }}">
+                    {{ $item->email ?: '-' }}
                 </a>
             </td>
         </tr>
     @endif
 
     {{-- Phone --}}
-    @if (method_exists($item, 'getPhone'))
+    @if (property_exists($item, 'phone'))
         <tr>
             <th >
                 @lang('contact.field.phone')
             </th>
             <td>
-                <a href="tel://{{ $item->phone
- }}">
-                    {{ $item->phone
- ?: '-' }}
+                <a href="tel://{{ $item->phone }}">
+                    {{ $item->phone ?: '-' }}
                 </a>
             </td>
         </tr>
     @endif
 
     {{-- URL --}}
-    @if (method_exists($item, 'getUrl'))
+    @if (property_exists($item, 'url'))
         <tr>
             <th >
                 @lang('contact.field.url')
             </th>
             <td>
-                @if (trim($item->url
-))
-                    <a href="{{ $item->url
- }}" target="_blank">
-                        {{ $item->url
- }}
+                @if (trim($item->url))
+                    <a href="{{ $item->url }}" target="_blank">
+                        {{ $item->url }}
                     </a>
                 @else
                     -
@@ -130,36 +120,33 @@ use Windwalker\Core\Router\SystemUri;
     @endif
 
     {{-- Params --}}
-    @if (method_exists($item, 'getParams'))
-        @if ($item->params
-['ip'] ?? '')
+    @if (property_exists($item, 'params'))
+        {{-- IP --}}
+        @if ($item->params['ip'] ?? '')
             <tr>
                 <th >
                     IP
                 </th>
                 <td>
-                    {{ $item->params
-['ip'] ?? '' }}
+                    {{ $item->params['ip'] ?? '' }}
                 </td>
             </tr>
         @endif
     @endif
 
     {{-- Content --}}
-    @if (method_exists($item, 'getContent'))
+    @if (property_exists($item, 'content'))
         <tr>
             <th >
                 @lang('contact.field.content')
             </th>
             <td>
-                {!! html_escape($item->content
- ?: '-', true) !!}
+                {!! html_escape($item->content ?: '-', true) !!}
             </td>
         </tr>
     @endif
 
-    @foreach ($item->details
- as $key => $value)
+    @foreach ($item->details as $key => $value)
         <tr>
             <th>
                 @if ($lang->has('contact.field.' . $key))
