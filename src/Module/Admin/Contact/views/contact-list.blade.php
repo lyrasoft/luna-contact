@@ -120,7 +120,8 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
                     <tr>
                         {{-- Checkbox --}}
                         <td>
-                            <x-row-checkbox :row="$i" :id="$entity->getId()"></x-row-checkbox>
+                            <x-row-checkbox :row="$i" :id="$entity->id
+"></x-row-checkbox>
                         </td>
 
                         {{-- State --}}
@@ -131,7 +132,8 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
                                 color-on="button"
                                 use-states
                                 :workflow="$workflow"
-                                :id="$entity->getId()"
+                                :id="$entity->id
+"
                                 :value="$item->state"
                             />
                         </td>
@@ -139,7 +141,8 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
                         {{-- Edit --}}
                         <td class="text-center">
                             <a class="btn btn-sm btn-outline-primary"
-                                href="{{ $nav->to('contact_edit')->id($entity->getId()) }}"
+                                href="{{ $nav->to('contact_edit')->id($entity->id
+) }}"
                                 title="@lang('contact.action.edit')">
                                 <i class="fa fa-pen-to-square"></i>
                             </a>
@@ -148,7 +151,8 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
                         {{-- Title --}}
                         <td>
                             <div class="mb-1">
-                                <a href="{{ $nav->to('contact_edit')->id($entity->getId())->layout('preview') }}"
+                                <a href="{{ $nav->to('contact_edit')->id($entity->id
+)->layout('preview') }}"
                                     uni-modal-link="#preview-modal"
                                     data-resize="1"
                                 >
@@ -207,7 +211,8 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
                         {{-- Delete --}}
                         <td class="text-center">
                             <button type="button" class="btn btn-sm btn-outline-secondary"
-                                @click="grid.deleteItem('{{ $entity->getId() }}')"
+                                @click="grid.deleteItem('{{ $entity->id
+ }}')"
                                 data-dos
                             >
                                 <i class="fa-solid fa-trash"></i>
@@ -216,7 +221,8 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
 
                         {{-- ID --}}
                         <td class="text-end">
-                            {{ $entity->getId() }}
+                            {{ $entity->id
+ }}
                         </td>
                     </tr>
                 @endforeach

@@ -28,23 +28,29 @@ class ContactService
     {
     }
 
-    public function createReceiverMailMessage(Contact $contact, ?string $subject = null, ?string $layout = null): MailMessage
-    {
+    public function createReceiverMailMessage(
+        Contact $contact,
+        ?string $subject = null,
+        ?string $layout = null
+    ): MailMessage {
         $subject ??= $this->trans(
-            'contact.mail.receiver.' . $contact->getType() . '.subject',
-            uid: $contact->getId(),
-            name: $contact->getName()
+            'contact.mail.receiver.' . $contact->type
+            . '.subject',
+            uid: $contact->id,
+            name: $contact->name
         );
 
         $message = $this->mailer->createMessage($subject)
             ->renderBody(
-                $layout ?? 'mail.contact-mail-receiver-' . $contact->getType(),
+                $layout ?? 'mail.contact-mail-receiver-' . $contact->type,
                 [
-                    'item' => $contact
+                    'item' => $contact,
                 ]
             );
 
-        $receivers = $this->config->getDeep('contact.receivers.' . $contact->getType());
+        $receivers = $this->config->getDeep(
+            'contact.receivers.' . $contact->type
+        );
 
         foreach ($receivers['cc'] ?? [] as $address) {
             $message->cc($address);
@@ -57,22 +63,30 @@ class ContactService
         return $message;
     }
 
-    public function createThanksMailMessage(Contact $contact, ?string $subject = null, ?string $layout = null): MailMessage
-    {
+    public function createThanksMailMessage(
+        Contact $contact,
+        ?string $subject = null,
+        ?string $layout = null
+    ): MailMessage {
         $subject ??= $this->trans(
-            'contact.mail.thanks.' . $contact->getType() . '.subject',
+            'contact.mail.thanks.' . $contact->type
+            . '.subject',
         );
 
         $message = $this->mailer->createMessage($subject)
             ->renderBody(
-                $layout ?? 'mail.contact-mail-thanks-' . $contact->getType(),
+                $layout ?? 'mail.contact-mail-thanks-' . $contact->type,
                 [
-                    'item' => $contact
+                    'item' => $contact,
                 ]
             );
 
-        if ($contact->getEmail()) {
-            $message->to("{$contact->getName()} <{$contact->getEmail()}>");
+        if (
+            $contact->email
+        ) {
+            $message->to(
+                "{$contact->name} <{$contact->email}>"
+            );
         }
 
         return $message;

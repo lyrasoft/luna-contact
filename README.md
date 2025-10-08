@@ -70,7 +70,7 @@ And remember set type when saving in controller:
 ```php
     $controller->prepareSave(
         function (PrepareSaveEvent $event) {
-            $data = &$event->getData();
+            $data = &$event->data;
 
             $data['type'] = 'foo';
         }

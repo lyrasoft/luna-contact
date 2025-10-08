@@ -11,10 +11,12 @@ declare(strict_types=1);
 
 namespace Lyrasoft\Contact;
 
+use Lyrasoft\Contact\Entity\Contact;
 use Lyrasoft\Contact\Service\ContactService;
 use Windwalker\Core\Package\AbstractPackage;
 use Windwalker\Core\Package\PackageInstaller;
 use Windwalker\DI\Container;
+use Windwalker\DI\MergeOptions;
 use Windwalker\DI\ServiceProviderInterface;
 
 /**
@@ -31,7 +33,7 @@ class ContactPackage extends AbstractPackage implements ServiceProviderInterface
             [
                 static::path('/views')
             ],
-            Container::MERGE_OVERRIDE
+            new MergeOptions(override: true)
         );
     }
 
@@ -43,33 +45,6 @@ class ContactPackage extends AbstractPackage implements ServiceProviderInterface
         $installer->installSeeders(static::path('resources/seeders/**/*'), 'seeders');
         $installer->installRoutes(static::path('routes/**/*.php'), 'routes');
 
-        // Modules
-        $installer->installModules(
-            [
-                static::path("src/Module/Admin/Contact/**/*") => "@source/Module/Admin/Contact",
-            ],
-            ['Lyrasoft\\Contact\\Module\\Admin' => 'App\\Module\\Admin'],
-            ['modules', 'contact_admin'],
-        );
-
-        $installer->installModules(
-            [
-                static::path("src/Module/Front/Contact/**/*") => "@source/Module/Front/Contact",
-            ],
-            ['Lyrasoft\\Contact\\Module\\Front' => 'App\\Module\\Front'],
-            ['modules', 'contact_front'],
-        );
-
-        $installer->installModules(
-            [
-                static::path("src/Entity/Contact.php") => '@source/Entity',
-                static::path("src/Repository/ContactRepository.php") => '@source/Repository',
-            ],
-            [
-                'Lyrasoft\\Contact\\Entity' => 'App\\Entity',
-                'Lyrasoft\\Contact\\Repository' => 'App\\Repository',
-            ],
-            ['modules', 'contact_model']
-        );
+        $installer->installMVCModules(Contact::class);
     }
 }

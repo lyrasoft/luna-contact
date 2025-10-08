@@ -34,7 +34,8 @@ use Windwalker\Core\Router\SystemUri;
             @lang('unicorn.field.id')
         </th>
         <td>
-            #{{ $item->getId() }}
+            #{{ $item->id
+ }}
         </td>
     </tr>
 
@@ -44,7 +45,8 @@ use Windwalker\Core\Router\SystemUri;
             @lang('unicorn.field.created')
         </th>
         <td>
-            {{ $chronos->toLocalFormat($item->getCreated()) }}
+            {{ $chronos->toLocalFormat($item->created
+) }}
         </td>
     </tr>
 
@@ -55,7 +57,8 @@ use Windwalker\Core\Router\SystemUri;
                 @lang('unicorn.field.title')
             </th>
             <td>
-                {{ $item->getTitle() }}
+                {{ $item->title
+ }}
             </td>
         </tr>
     @endif
@@ -67,7 +70,8 @@ use Windwalker\Core\Router\SystemUri;
                 @lang('contact.field.name')
             </th>
             <td>
-                {{ $item->getName() }}
+                {{ $item->name
+ }}
             </td>
         </tr>
     @endif
@@ -79,8 +83,10 @@ use Windwalker\Core\Router\SystemUri;
                 @lang('contact.field.email')
             </th>
             <td>
-                <a href="mailto://{{ $item->getEmail() }}">
-                    {{ $item->getEmail() ?: '-' }}
+                <a href="mailto://{{ $item->email
+ }}">
+                    {{ $item->email
+ ?: '-' }}
                 </a>
             </td>
         </tr>
@@ -93,8 +99,10 @@ use Windwalker\Core\Router\SystemUri;
                 @lang('contact.field.phone')
             </th>
             <td>
-                <a href="tel://{{ $item->getPhone() }}">
-                    {{ $item->getPhone() ?: '-' }}
+                <a href="tel://{{ $item->phone
+ }}">
+                    {{ $item->phone
+ ?: '-' }}
                 </a>
             </td>
         </tr>
@@ -107,9 +115,12 @@ use Windwalker\Core\Router\SystemUri;
                 @lang('contact.field.url')
             </th>
             <td>
-                @if (trim($item->getUrl()))
-                    <a href="{{ $item->getUrl() }}" target="_blank">
-                        {{ $item->getUrl() }}
+                @if (trim($item->url
+))
+                    <a href="{{ $item->url
+ }}" target="_blank">
+                        {{ $item->url
+ }}
                     </a>
                 @else
                     -
@@ -120,13 +131,15 @@ use Windwalker\Core\Router\SystemUri;
 
     {{-- Params --}}
     @if (method_exists($item, 'getParams'))
-        @if ($item->getParams()['ip'] ?? '')
+        @if ($item->params
+['ip'] ?? '')
             <tr>
                 <th >
                     IP
                 </th>
                 <td>
-                    {{ $item->getParams()['ip'] ?? '' }}
+                    {{ $item->params
+['ip'] ?? '' }}
                 </td>
             </tr>
         @endif
@@ -139,12 +152,14 @@ use Windwalker\Core\Router\SystemUri;
                 @lang('contact.field.content')
             </th>
             <td>
-                {!! html_escape($item->getContent() ?: '-', true) !!}
+                {!! html_escape($item->content
+ ?: '-', true) !!}
             </td>
         </tr>
     @endif
 
-    @foreach ($item->getDetails() as $key => $value)
+    @foreach ($item->details
+ as $key => $value)
         <tr>
             <th>
                 @if ($lang->has('contact.field.' . $key))

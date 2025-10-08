@@ -68,7 +68,8 @@ class ContactController
 
                 /** @var Contact $entity */
                 $entity = $repository->getItem($data['id']);
-                $type   = $entity->getType();
+                $type = $entity->type
+;
 
                 // Admin receiver mail
                 // ------------------------
@@ -110,7 +111,9 @@ class ContactController
                 $entity = $sendEvent->getEntity();
 
                 foreach ($users as $user) {
-                    $message->bcc($user->getEmail());
+                    $message->bcc(
+                        $user->email
+);
                 }
 
                 if ($message->getTo() || $message->getCc() || $message->getBcc()) {

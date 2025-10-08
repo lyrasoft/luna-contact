@@ -32,6 +32,8 @@ use Windwalker\ORM\Metadata\EntityMetadata;
 /**
  * The Contact class.
  */
+// phpcs:disable
+// todo: remove this when phpcs supports 8.4
 #[Table('contacts', 'contact')]
 #[\AllowDynamicProperties]
 class Contact implements EntityInterface
@@ -39,61 +41,67 @@ class Contact implements EntityInterface
     use EntityTrait;
 
     #[Column('id'), PK, AutoIncrement]
-    protected ?int $id = null;
+    public ?int $id = null;
 
     #[Column('type')]
-    protected string $type = '';
+    public string $type = '';
 
     #[Column('title')]
-    protected string $title = '';
+    public string $title = '';
 
     #[Column('email')]
-    protected string $email = '';
+    public string $email = '';
 
     #[Column('name')]
-    protected string $name = '';
+    public string $name = '';
 
     #[Column('url')]
-    protected string $url = '';
+    public string $url = '';
 
     #[Column('phone')]
-    protected string $phone = '';
+    public string $phone = '';
 
     #[Column('content')]
-    protected string $content = '';
+    public string $content = '';
 
     #[Column('details')]
     #[Cast(JsonCast::class)]
-    protected array $details = [];
+    public array $details = [];
 
     #[Column('state')]
     #[Cast(ContactState::class)]
-    protected ContactState $state = ContactState::PENDING;
+    public ContactState $state = ContactState::PENDING {
+        set(ContactState|string $value) => $this->state = ContactState::wrap($value);
+    }
 
     #[Column('created')]
     #[CastNullable(Chronos::class)]
     #[CreatedTime]
-    protected ?Chronos $created = null;
+    public ?Chronos $created = null {
+        set(\DateTimeInterface|string|null $value) => $this->created = Chronos::tryWrap($value);
+    }
 
     #[Column('modified')]
     #[CastNullable(Chronos::class)]
     #[CurrentTime]
-    protected ?Chronos $modified = null;
+    public ?Chronos $modified = null {
+        set(\DateTimeInterface|string|null $value) => $this->modified = Chronos::tryWrap($value);
+    }
 
     #[Column('assignee_id')]
-    protected int $assigneeId = 0;
+    public int $assigneeId = 0;
 
     #[Column('created_by')]
     #[Author]
-    protected int $createdBy = 0;
+    public int $createdBy = 0;
 
     #[Column('modified_by')]
     #[Modifier]
-    protected int $modifiedBy = 0;
+    public int $modifiedBy = 0;
 
     #[Column('params')]
     #[Cast(JsonCast::class)]
-    protected array $params = [];
+    public array $params = [];
 
     #[EntitySetup]
     public static function setup(EntityMetadata $metadata): void
