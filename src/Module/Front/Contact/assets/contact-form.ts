@@ -4,7 +4,8 @@ import {
   useDisableIfStackNotEmpty,
   useDisableOnSubmit,
   useFormComponent,
-  useFormValidation, useFormValidationSync,
+  useFormValidation,
+  useFormValidationInstance,
   useKeepAlive,
 } from '@windwalker-io/unicorn-next';
 
@@ -25,7 +26,7 @@ const button = document.querySelector<HTMLButtonElement>('[data-task="submit"]')
 
 if (form && button) {
   button?.addEventListener('click', () => {
-    const validation = useFormValidationSync(formSelector);
+    const validation = useFormValidationInstance(formSelector);
 
     if (!validation) {
       throw new Error('Validation not initialized');
