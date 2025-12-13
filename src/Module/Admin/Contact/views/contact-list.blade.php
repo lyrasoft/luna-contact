@@ -125,7 +125,7 @@ $workflow = $app->service(\Lyrasoft\Contact\Workflow\ContactStateWorkflow::class
 
                         {{-- State --}}
                         <td>
-                            <x-state-dropdown color-on="text"
+                            <x-state-dropdown
                                 style="width: 100%"
                                 button-style="width: 100%"
                                 color-on="button"
