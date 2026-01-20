@@ -13,21 +13,25 @@ composer require lyrasoft/contact
 Then copy files to project
 
 ```shell
-php windwalker pkg:install lyrasoft/contact -t routes -t lang -t migrations -t seeders
+php windwalker pkg:install lyrasoft/contact -t routes -t migrations -t seeders
 ```
 
 Seeders
 
 - Add `contact-seeder.php` to `resources/seeders/main.php`
 
-Languages
+### Languages
 
-If you don't want to copy language files, remove `-t lang` from install command.
-
-Then add this line to admin & front middleware:
+Add this line to admin & front middleware:
 
 ```php
 $this->lang->loadAllFromVendor(\Lyrasoft\Contact\ContactPackage::class, 'ini');
+```
+
+If you want to copy language files, Run this command (Optional):
+
+```shell
+php windwalker pkg:install lyrasoft/contact -t lang
 ```
 
 ## Register Admin Menu
