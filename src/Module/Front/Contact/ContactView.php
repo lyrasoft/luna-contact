@@ -57,21 +57,16 @@ class ContactView implements ViewModelInterface
      */
     public function prepare(AppContext $app, View $view): mixed
     {
-        $id = $app->input('id');
-
-        $item = $this->repository->getItem($id);
-
         $form = $this->formFactory
             ->create(EditForm::class)
             ->setNamespace('item')
             ->fill(
                 $this->repository->getState()->getAndForget('edit.data')
-                    ?: $this->orm->extractEntity($item)
             );
 
         $this->prepareMetadata($app, $view);
 
-        return compact('form', 'id', 'item');
+        return compact('form');
     }
 
     /**
