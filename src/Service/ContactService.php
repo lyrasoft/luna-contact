@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace Lyrasoft\Contact\Service;
 
 use Lyrasoft\Contact\Entity\Contact;
+use Symfony\Component\RateLimiter\Exception\RateLimitExceededException;
+use Symfony\Component\RateLimiter\RateLimit;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\RateLimiter\Storage\CacheStorage;
 use Windwalker\Cache\CachePool;
@@ -122,14 +124,20 @@ class ContactService
         );
     }
 
-    public function rateLimitOrThrow(string $type, string $ip): void
+    public function checkRateLimit(string $type, string $ip): RateLimit
     {
         $limiterFactory = $this->createRateLimiter($type);
-        $limiter = $limiterFactory->create('contact-' . $ip);
 
-        $limit = $limiter->consume(1);
+        return $limiterFactory->create('contact--' . $ip)->consume(1);
+    }
 
-        $limit->ensureAccepted();
+    public function rateLimitOrThrow(string $type, string $ip): void
+    {
+        $limit = $this->checkRateLimit($type, $ip);
+
+        if ($limit->isAccepted()) {
+            throw new RateLimitExceededException($limit, 429);
+        }
 
         $this->clearFileCacheExpired();
     }

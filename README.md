@@ -87,9 +87,43 @@ Front controller has rate limit function to prevent spam. you can configure it i
 
 ```php
     'rate_limit' => [
-        'enabled' => true,
-        'max_attempts' => 5,
-        'decay_minutes' => 10,
+        // Default rate limit config
+        '_default' => [
+            'policy' => 'fixed_window',
+            'limit' => 10,
+            'interval' => '1day',
+        ],
+        
+        // You can add different rate limit for different type
+        'main' => [
+            'policy' => 'fixed_window',
+            'limit' => 10,
+            'interval' => '1day',
+        ],
     ],
 ```
 
+If you create a new controller to save contact form, you can use rate limiter in controller:
+
+```php
+    public function save(
+        AppContext $app,
+        ContactService $contactService,
+        // ...
+    ): mixed {
+        // Set your form type
+        $type = 'inquiry';
+        
+        // Check or throw
+        $contactService->rateLimitOrThrow($type, $app->getAppRequest()->getClientIP());
+        
+        // Or throw yourself
+        $limit = $contactService->checkRateLimit($type, $app->getAppRequest()->getClientIP());
+        
+        if (!$limit->isAccepted()) {
+            throw new \RuntimeException('Rate limit exceeded', 429);
+        }
+        
+
+    // ...
+```
