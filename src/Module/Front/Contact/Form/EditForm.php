@@ -72,8 +72,6 @@ class EditForm implements FieldDefinitionInterface
                     ->autoValidate(true)
                     ->required(true);
 
-                $form->add('id', HiddenField::class);
-
                 $form->add('type', HiddenField::class)
                     ->label($this->trans('unicorn.field.type'));
             }

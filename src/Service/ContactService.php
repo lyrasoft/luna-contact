@@ -12,6 +12,11 @@ declare(strict_types=1);
 namespace Lyrasoft\Contact\Service;
 
 use Lyrasoft\Contact\Entity\Contact;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\Storage\CacheStorage;
+use Windwalker\Cache\CachePool;
+use Windwalker\Cache\Serializer\PhpSerializer;
+use Windwalker\Cache\Storage\FileStorage;
 use Windwalker\Core\Language\TranslatorTrait;
 use Windwalker\Core\Mailer\MailerInterface;
 use Windwalker\Core\Mailer\MailMessage;
@@ -90,5 +95,46 @@ class ContactService
         }
 
         return $message;
+    }
+
+    public function getRateLimitConfig(string $type): array
+    {
+        $config = $this->config->getDeep('contact.rate_limit.' . $type)
+            ?? $this->config->getDeep('contact.rate_limit._default');
+
+        return array_map(
+            [
+                'id' => $type,
+                'policy' => 'fixed_window',
+                'limit' => 10,
+                'interval' => 10,
+            ],
+            $config ?? []
+        );
+    }
+
+    public function rateLimitOrThrow(string $type, string $ip): void
+    {
+        $limiterFactory = $this->createRateLimiter($type);
+        $limiter = $limiterFactory->create('contact-' . $ip);
+
+        $limit = $limiter->consume(1);
+        
+        $limit->ensureAccepted();
+    }
+
+    public function createRateLimiter(string $type = 'main'): RateLimiterFactory
+    {
+        return new RateLimiterFactory(
+            $this->getRateLimitConfig($type),
+            new CacheStorage(
+                new CachePool(
+                    new FileStorage(
+                        WINDWALKER_CACHE . '/contact'
+                    ),
+                    new PhpSerializer(),
+                )
+            )
+        );
     }
 }

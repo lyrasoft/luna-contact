@@ -48,15 +48,18 @@ class ContactController
         UserService $userService,
         ContactService $contactService
     ): mixed {
+        $type = 'main';
+        $contactService->rateLimitOrThrow($type, $app->getAppRequest()->getClientIP());
+
         $form = $app->make(EditForm::class);
 
         $controller->setMuted(true);
 
         $controller->prepareSave(
-            function (PrepareSaveEvent $event) use ($app) {
-                $data = &$event->getData();
+            function (PrepareSaveEvent $event) use ($type, $app) {
+                $data = &$event->data;
 
-                $data['type'] = 'main';
+                $data['type'] = $type;
                 $data['params'] ??= [];
                 $data['params']['ip'] = $app->getAppRequest()->getClientIP();
             }
@@ -64,7 +67,7 @@ class ContactController
 
         $controller->afterSave(
             function (AfterSaveEvent $event) use ($app, $repository, $userService, $userRepository, $contactService) {
-                $data = $event->getData();
+                $data = $event->data;
 
                 /** @var Contact $entity */
                 $entity = $repository->getItem($data['id']);
