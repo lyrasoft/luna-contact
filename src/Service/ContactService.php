@@ -102,12 +102,12 @@ class ContactService
         $config = $this->config->getDeep('contact.rate_limit.' . $type)
             ?? $this->config->getDeep('contact.rate_limit._default');
 
-        return array_map(
+        return array_merge(
             [
                 'id' => $type,
                 'policy' => 'fixed_window',
                 'limit' => 10,
-                'interval' => 10,
+                'interval' => '1day',
             ],
             $config ?? []
         );
