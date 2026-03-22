@@ -17,10 +17,12 @@ use Symfony\Component\RateLimiter\Storage\CacheStorage;
 use Windwalker\Cache\CachePool;
 use Windwalker\Cache\Serializer\PhpSerializer;
 use Windwalker\Cache\Storage\FileStorage;
+use Windwalker\Core\Application\ApplicationInterface;
 use Windwalker\Core\Language\TranslatorTrait;
 use Windwalker\Core\Mailer\MailerInterface;
 use Windwalker\Core\Mailer\MailMessage;
 use Windwalker\Core\Runtime\Config;
+use Windwalker\Filesystem\Filesystem;
 
 /**
  * The ContactService class.
@@ -29,8 +31,11 @@ class ContactService
 {
     use TranslatorTrait;
 
-    public function __construct(protected MailerInterface $mailer, protected Config $config)
-    {
+    public function __construct(
+        protected ApplicationInterface $app,
+        protected MailerInterface $mailer,
+        protected Config $config
+    ) {
     }
 
     public function createReceiverMailMessage(
@@ -97,10 +102,14 @@ class ContactService
         return $message;
     }
 
-    public function getRateLimitConfig(string $type): array
+    protected function getRateLimitConfig(string $type): array|\Closure
     {
         $config = $this->config->getDeep('contact.rate_limit.' . $type)
             ?? $this->config->getDeep('contact.rate_limit._default');
+
+        if ($config instanceof \Closure) {
+            return $config;
+        }
 
         return array_merge(
             [
@@ -119,22 +128,66 @@ class ContactService
         $limiter = $limiterFactory->create('contact-' . $ip);
 
         $limit = $limiter->consume(1);
-        
+
         $limit->ensureAccepted();
+
+        $this->clearFileCacheExpired();
     }
 
     public function createRateLimiter(string $type = 'main'): RateLimiterFactory
     {
+        $config = $this->getRateLimitConfig($type);
+
+        if ($config instanceof \Closure) {
+            return $this->app->call($config);
+        }
+
         return new RateLimiterFactory(
-            $this->getRateLimitConfig($type),
+            $config,
             new CacheStorage(
                 new CachePool(
-                    new FileStorage(
-                        WINDWALKER_CACHE . '/contact'
-                    ),
+                    $this->getFileStorage(),
                     new PhpSerializer(),
+                    defaultTtl: 86400 * 30
                 )
             )
         );
+    }
+
+    protected function getFileStorage(): FileStorage
+    {
+        return new FileStorage(
+            WINDWALKER_CACHE . '/contact'
+        );
+    }
+
+    public function clearFileCacheExpired(float $change = 0.01): void
+    {
+        $shouldClear = random_int(0, 999_999) / 1_000_000 < $change;
+
+        if ($shouldClear) {
+            return;
+        }
+
+
+        $storage = $this->getFileStorage();
+
+        $files = Filesystem::files(WINDWALKER_CACHE . '/contact');
+
+        foreach ($files as $file) {
+            $data = (string) $file->read();
+
+            preg_match(
+                '#' . $storage::escapeRegex($storage->getOption('expiration_format')) . '#',
+                $data,
+                $matches
+            );
+
+            $expires = $matches[1];
+            
+            if ($expires < time()) {
+                $file->deleteIfExists();
+            }
+        }
     }
 }

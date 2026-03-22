@@ -80,3 +80,16 @@ And remember set type when saving in controller:
         }
     );
 ```
+
+### RateLimit
+
+Front controller has rate limit function to prevent spam. you can configure it in `etc/packages/contact.config.php`
+
+```php
+    'rate_limit' => [
+        'enabled' => true,
+        'max_attempts' => 5,
+        'decay_minutes' => 10,
+    ],
+```
+
