@@ -49,9 +49,10 @@ class ContactController
         ContactService $contactService
     ): mixed {
         $type = 'main';
+        $ip = $app->getAppRequest()->getClientIP();
 
         if (!WINDWALKER_DEBUG) {
-            $contactService->rateLimitOrThrow($type, $app->getAppRequest()->getClientIP());
+            $contactService->rateLimitOrThrow($type, $ip);
         }
 
         $form = $app->make(EditForm::class);
@@ -59,12 +60,12 @@ class ContactController
         $controller->setMuted(true);
 
         $controller->prepareSave(
-            function (PrepareSaveEvent $event) use ($type, $app) {
+            function (PrepareSaveEvent $event) use ($type, $ip) {
                 $data = &$event->data;
 
                 $data['type'] = $type;
                 $data['params'] ??= [];
-                $data['params']['ip'] = $app->getAppRequest()->getClientIP();
+                $data['params']['ip'] = $ip;
             }
         );
 
