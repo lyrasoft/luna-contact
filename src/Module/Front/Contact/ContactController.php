@@ -49,7 +49,10 @@ class ContactController
         ContactService $contactService
     ): mixed {
         $type = 'main';
-        $contactService->rateLimitOrThrow($type, $app->getAppRequest()->getClientIP());
+
+        if (!WINDWALKER_DEBUG) {
+            $contactService->rateLimitOrThrow($type, $app->getAppRequest()->getClientIP());
+        }
 
         $form = $app->make(EditForm::class);
 
