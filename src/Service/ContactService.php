@@ -135,7 +135,7 @@ class ContactService
     {
         $limit = $this->checkRateLimit($type, $ip);
 
-        if ($limit->isAccepted()) {
+        if (!$limit->isAccepted()) {
             throw new RateLimitExceededException($limit, 429);
         }
 
